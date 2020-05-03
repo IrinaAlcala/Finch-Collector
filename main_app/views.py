@@ -33,7 +33,7 @@ class FinchCreate(LoginRequiredMixin, CreateView):
   fields = ['name', 'type', 'description', 'age']
   def form_valid(self, form):
     # Assign the logged in user (self.request.user)
-    form.instance.user = self.request.user  # form.instance is the cat
+    form.instance.user = self.request.user  
     # Let the CreateView do its job as usual
     return super().form_valid(form)
 
@@ -56,6 +56,7 @@ def finches_index(request):
   finches = Finch.objects.filter(user=request.user)
   return render(request, 'finches/index.html', { 'finches': finches })
 
+@login_required
 def finches_detail(request, finch_id):
   finch = Finch.objects.get(id=finch_id)
   # Get the toys the cat doesn't have
@@ -68,7 +69,7 @@ def finches_detail(request, finch_id):
     # Add the toys to be displayed
     'toys': toys_finch_doesnt_have
   })
-
+@login_required
 def add_feeding(request, finch_id):
 	# create the ModelForm using the data in request.POST
   form = FeedingForm(request.POST)
@@ -81,10 +82,12 @@ def add_feeding(request, finch_id):
     new_feeding.save()
   return redirect('detail', finch_id=finch_id)
 
+@login_required
 def assoc_toy(request, finch_id, toy_id):
   Finch.objects.get(id=finch_id).toys.add(toy_id)
   return redirect('detail', finch_id=finch_id)
 
+@login_required
 def unassoc_toy(request, finch_id, toy_id):
   Finch.objects.get(id=finch_id).toys.remove(toy_id)
   return redirect('detail', finch_id=finch_id)
