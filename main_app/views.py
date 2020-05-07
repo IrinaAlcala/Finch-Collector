@@ -37,11 +37,11 @@ class FinchCreate(LoginRequiredMixin, CreateView):
     # Let the CreateView do its job as usual
     return super().form_valid(form)
 
-class FinchUpdate(UpdateView):
+class FinchUpdate(LoginRequiredMixin, UpdateView):
   model = Finch
   fields = ['type', 'description', 'age']
 
-class FinchDelete(DeleteView):
+class FinchDelete(LoginRequiredMixin, DeleteView):
   model = Finch
   success_url = '/finches/'
 

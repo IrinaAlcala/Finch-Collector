@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -10,9 +10,7 @@ urlpatterns = [
   path('finches/<int:pk>/update/', views.FinchUpdate.as_view(), name='finches_update'),
   path('finches/<int:pk>/delete/', views.FinchDelete.as_view(), name='finches_delete'),
   path('finches/<int:finch_id>/add_feeding/', views.add_feeding, name='add_feeding'),
-  # associate a toy with a cat (M:M)
   path('finches/<int:finch_id>/assoc_toy/<int:toy_id>/', views.assoc_toy, name='assoc_toy'),
-  # unassociate a toy and cat
   path('finches/<int:finch_id>/unassoc_toy/<int:toy_id>/', views.unassoc_toy, name='unassoc_toy'),
   path('toys/', views.ToyList.as_view(), name='toys_index'),
   path('toys/<int:pk>/', views.ToyDetail.as_view(), name='toys_detail'),
