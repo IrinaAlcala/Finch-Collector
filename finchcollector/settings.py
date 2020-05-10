@@ -123,5 +123,3 @@ LOGIN_REDIRECT_URL = '/finches/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-import django_heroku
-django_heroku.settings(locals())

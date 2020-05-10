@@ -32,14 +32,15 @@ class FinchCreate(LoginRequiredMixin, CreateView):
   model = Finch
   fields = ['name', 'type', 'description', 'age']
   def form_valid(self, form):
-    # Assign the logged in user (self.request.user)
     form.instance.user = self.request.user  
-    # Let the CreateView do its job as usual
     return super().form_valid(form)
 
 class FinchUpdate(LoginRequiredMixin, UpdateView):
   model = Finch
   fields = ['type', 'description', 'age']
+  success_url = '/finches/'
+  
+  
 
 class FinchDelete(LoginRequiredMixin, DeleteView):
   model = Finch
@@ -51,15 +52,14 @@ def home(request):
 def about(request):
   return render(request, 'about.html')
 
-@login_required
+
 def finches_index(request):
-  finches = Finch.objects.filter(user=request.user)
+  finches = Finch.objects.filter(user = request.user)
   return render(request, 'finches/index.html', { 'finches': finches })
 
 @login_required
 def finches_detail(request, finch_id):
   finch = Finch.objects.get(id=finch_id)
-  # Get the toys the cat doesn't have
   toys_finch_doesnt_have = Toy.objects.exclude(id__in = finch.toys.all().values_list('id'))
   # Instantiate FeedingForm to be rendered in the template
   feeding_form = FeedingForm()
@@ -105,6 +105,7 @@ class ToyCreate(CreateView):
 class ToyUpdate(UpdateView):
   model = Toy
   fields = ['name', 'color']
+
 
 class ToyDelete(DeleteView):
   model = Toy
